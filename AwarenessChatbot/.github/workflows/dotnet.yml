@@ -1,0 +1,31 @@
+name: .NET Core Build
+
+on:
+  push:
+    branches:
+      - feature-branch  # You can change this to 'main' if you're pushing to the main branch
+  pull_request:
+    branches:
+      - feature-branch  # You can change this to 'main' if you're creating pull requests to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0'  # Adjust version if necessary
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release
+
+      - name: Run tests
+        run: dotnet test --no-restore --verbosity normal
